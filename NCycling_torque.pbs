@@ -1,0 +1,29 @@
+#!/bin/bash
+#PBS -N NCycling-WP1
+#PBS -l mem=64gb
+#PBS -l nodes=1:ppn=20
+#PBS -l walltime=08:00:00
+#PBS -q bioforce-6
+#PBS -o /nv/hmicro1/jzhao399/scratch/log/pico/${PBS_JOBNAME}_${PBS_JOBID}.out
+#PBS -e /nv/hmicro1/jzhao399/scratch/log/pico/${PBS_JOBNAME}_${PBS_JOBID}.err
+#PBS -t 1010,1040,110,1110,1140,1210,1240,1310,1340,140,1410,1440,1510,1540,1610,1640,1710,1740,1810,1840,1910,1940,2010,2040,210,2110,2140,2210,2240,2310,2340,240,2410,2440,2510,2540,2610,2640,2710,2740,2810,2840,2910,2940,3010,3040,310,3110,3140,3210,3240,3310,3340,340,3410,3440,3510,3540,3610,3640,410,440,510,540,610,640,710,740,810,840,910,940
+
+module load ncbi_blast/2.22.2
+module load hmmer/3.0
+module load mafft/7.245
+module load perl/5.22.1
+
+module load use.own
+module load usearch11/11.0.667
+module load diamond/0.9.31.132
+
+name=WP${PBS_ARRAYID}
+wd=/nv/hmicro1/jzhao399/scratch/02.trimmed_wp
+cd /nv/hmicro1/jzhao399/scratch/02.trimmed_wp/${name}/
+cp /nv/hmicro1/jzhao399/scratch/02.trimmed_wp/${name}.CoupledReads.fasta.gz ${wd}/${name}/
+cp /nv/hmicro1/jzhao399/scratch/02.trimmed_wp/NCycProfiler.PL ${wd}/${name}/
+cp -r /nv/hmicro1/jzhao399/scratch/02.trimmed_wp/data ${wd}/${name}/
+
+rm ${wd}/${name}/*.diamond
+perl /nv/hmicro1/jzhao399/scratch/02.trimmed_wp/${name}/NCycProfiler.PL -d /nv/hmicro1/jzhao399/scratch/02.trimmed_wp/${name} -m diamond -f fasta.gz -s nucl -si /nv/hmicro1/jzhao399/scratch/02.trimmed_wp/${name}/sample.txt -o /nv/hmicro1/jzhao399/scratch/02.trimmed_wp/${name}/${name}_N_annotation_diamond.txt
+cp /nv/hmicro1/jzhao399/scratch/02.trimmed_wp/${name}/${name}_N_annotation_diamond.txt /nv/hmicro1/jzhao399/scratch/
