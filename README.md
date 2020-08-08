@@ -33,3 +33,17 @@ Detailed explanations:
 
 -o : the output file for N cycle gene profiles.   
   
+
+
+
+
+
+
+
+
+
+#### run on supercomputer
+
+There is also an pbs script that allows you to run NcyclingProfile.PL on Torque based supercomputer when you have more than 100 million reads per sample and a lot of samples. Run each sample first without random sampling across samples and then normalize them by hand after all samples have been finished.
+
+A Slurm system based sbatch script is also available.
